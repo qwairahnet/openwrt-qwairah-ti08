@@ -63,5 +63,11 @@ cp -rf "$ROOT_DIR/files/." files/
 make -j"$(nproc)" || { make -j1 target/linux/install V=sc; exit 1; }
 
 mkdir -p "$ROOT_DIR/artifacts_out"
-cp -f bin/targets/ipq40xx/generic/*sysupgrade.bin bin/targets/ipq40xx/generic/*kernel.bin "$ROOT_DIR/artifacts_out/" 2>/dev/null || true
+ls -la bin/targets/ipq40xx/generic/
+for f in bin/targets/ipq40xx/generic/*sysupgrade.bin bin/targets/ipq40xx/generic/*kernel.bin; do
+    [ -f "$f" ] || continue
+    base=$(basename "$f")
+    cp -f "$f" "$ROOT_DIR/artifacts_out/$base"
+    cp -f "$f" "$ROOT_DIR/artifacts_out/QWAIRAH-TI08-708H-${base}"
+done
 ls -lh "$ROOT_DIR/artifacts_out/"
